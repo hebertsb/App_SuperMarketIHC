@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "725241090227",
+    "project_id": "supermarketdeliveryap",
+    "storage_bucket": "supermarketdeliveryap.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725241090227:android:c726cab65b22145c8620c6",
+        "android_client_info": {
+          "package_name": "com.example.supermarket_delivery_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "725241090227-mo3b569ihlbksq6pdq3b0ae5pmabbikq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJzBa79noIgbDZPZ70GA9W_Oz5Pzklw3o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "725241090227-mo3b569ihlbksq6pdq3b0ae5pmabbikq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
