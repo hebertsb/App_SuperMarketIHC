@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supermarket_delivery_app/screens/products/product_list_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/auth/login_screen.dart';
-import 'screens/products/product_list_screen.dart';
 import 'screens/cart/cart_screen.dart';
 import 'screens/orders/order_tracking_screen.dart';
 import 'screens/profile/profile_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Inicializar Firebase (comentado para funcionar sin configuración)
-  // await Firebase.initializeApp();
-  
+
   runApp(
     const ProviderScope(
       child: SupermarketDeliveryApp(),
@@ -65,13 +62,11 @@ final _router = GoRouter(
       builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
-      path: '/products/:storeId',
-      builder: (context, state) => ProductListScreen(
-        storeId: state.pathParameters['storeId']!,
-      ),
+      path: '/products',
+      builder: (context, state) => const ListaProductosScreen(),
     ),
     GoRoute(
-      path: '/cart',
+      path: '/carrito',
       builder: (context, state) => const CartScreen(),
     ),
     GoRoute(

@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../models/product.dart';
-import '../../widgets/product_card.dart';
+import 'package:supermarket_delivery_app/data/producto.dart';
+import 'package:supermarket_delivery_app/widgets/product_card.dart';
 import '../../widgets/search_bar.dart';
 
-class ProductListScreen extends ConsumerWidget {
-  final String storeId;
-
-  const ProductListScreen({
-    super.key,
-    required this.storeId,
-  });
+class ListaProductosScreen extends ConsumerWidget {
+  const ListaProductosScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,26 +16,26 @@ class ProductListScreen extends ConsumerWidget {
         backgroundColor: const Color(0xFFE53935),
         actions: [
           IconButton(
-            onPressed: () => context.push('/cart'),
+            onPressed: () => context.push('/carrito'),
             icon: const Icon(Icons.shopping_cart),
           ),
         ],
       ),
       body: Column(
         children: [
-          // Search bar
+          // Barra de búsqueda
           Container(
             color: const Color(0xFFE53935),
             padding: const EdgeInsets.all(16),
             child: CustomSearchBar(
               hintText: 'Buscar productos...',
-              onChanged: (value) {
-                // Implementar búsqueda
+              onChanged: (valor) {
+                // Implementar lógica de búsqueda
               },
             ),
           ),
-          
-          // Categories filter
+
+          // Filtro de categorías
           Container(
             height: 50,
             padding: const EdgeInsets.symmetric(vertical: 8),
@@ -48,17 +43,18 @@ class ProductListScreen extends ConsumerWidget {
               scrollDirection: Axis.horizontal,
               children: [
                 const SizedBox(width: 16),
-                _buildCategoryFilter('Todos', true),
-                _buildCategoryFilter('Frutas', false),
-                _buildCategoryFilter('Verduras', false),
-                _buildCategoryFilter('Lácteos', false),
-                _buildCategoryFilter('Carnes', false),
+                _construirFiltroCategoria('Todos', true),
+                _construirFiltroCategoria('Frutas', false),
+                _construirFiltroCategoria('Lácteos', false),
+                _construirFiltroCategoria('Cereales', false),
+                _construirFiltroCategoria('Snacks', false),
+                _construirFiltroCategoria('Limpieza', false),
                 const SizedBox(width: 16),
               ],
             ),
           ),
-          
-          // Products grid
+
+          // Grilla de productos
           Expanded(
             child: GridView.builder(
               padding: const EdgeInsets.all(16),
@@ -68,15 +64,15 @@ class ProductListScreen extends ConsumerWidget {
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
               ),
-              itemCount: _mockProducts.length,
+              itemCount: productos.length,
               itemBuilder: (context, index) {
-                final product = _mockProducts[index];
-                return ProductCard(
-                  product: product,
-                  onAddToCart: () {
+                final producto = productos[index];
+                return ProductoCard(
+                  producto: producto,
+                  onAgregarAlCarrito: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('${product.name} agregado al carrito'),
+                        content: Text('${producto.nombre} agregado al carrito'),
                         duration: const Duration(seconds: 1),
                       ),
                     );
@@ -90,14 +86,14 @@ class ProductListScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildCategoryFilter(String label, bool isSelected) {
+  Widget _construirFiltroCategoria(String etiqueta, bool seleccionado) {
     return Container(
       margin: const EdgeInsets.only(right: 8),
       child: FilterChip(
-        label: Text(label),
-        selected: isSelected,
+        label: Text(etiqueta),
+        selected: seleccionado,
         onSelected: (selected) {
-          // Implementar filtro
+          // Implementar filtrado aquí
         },
         selectedColor: const Color(0xFFE53935).withValues(alpha: 0.2),
         checkmarkColor: const Color(0xFFE53935),
@@ -105,65 +101,3 @@ class ProductListScreen extends ConsumerWidget {
     );
   }
 }
-
-// Mock products data
-final List<Product> _mockProducts = [
-  Product(
-    id: '1',
-    storeId: '1',
-    name: 'Manzana Roja',
-    description: 'Manzanas rojas frescas del valle',
-    price: 12.50,
-    originalPrice: 15.00,
-    images: ['assets/images/apple.jpg'],
-    category: 'Frutas',
-    unit: 'kg',
-    stock: 50,
-    isAvailable: true,
-    rating: 4.5,
-    reviewCount: 25,
-  ),
-  Product(
-    id: '2',
-    storeId: '1',
-    name: 'Leche Entera',
-    description: 'Leche fresca entera 1L',
-    price: 8.50,
-    images: ['assets/images/milk.jpg'],
-    category: 'Lácteos',
-    unit: 'litro',
-    stock: 30,
-    isAvailable: true,
-    rating: 4.2,
-    reviewCount: 18,
-  ),
-  Product(
-    id: '3',
-    storeId: '1',
-    name: 'Pan Integral',
-    description: 'Pan integral artesanal',
-    price: 6.00,
-    images: ['assets/images/bread.jpg'],
-    category: 'Panadería',
-    unit: 'unidad',
-    stock: 15,
-    isAvailable: true,
-    rating: 4.8,
-    reviewCount: 42,
-  ),
-  Product(
-    id: '4',
-    storeId: '1',
-    name: 'Tomate',
-    description: 'Tomates frescos del altiplano',
-    price: 8.00,
-    originalPrice: 10.00,
-    images: ['assets/images/tomato.jpg'],
-    category: 'Verduras',
-    unit: 'kg',
-    stock: 25,
-    isAvailable: true,
-    rating: 4.0,
-    reviewCount: 12,
-  ),
-];
