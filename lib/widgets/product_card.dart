@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../models/producto.dart';
+import '../models/product.dart';
 
-class ProductoCard extends StatelessWidget {
-  final Producto producto;
-  final VoidCallback onAgregarAlCarrito;
+class ProductCard extends StatelessWidget {
+  final Product product;
+  final VoidCallback onAddToCart;
 
-  const ProductoCard({
+  const ProductCard({
     super.key,
-    required this.producto,
-    required this.onAgregarAlCarrito,
+    required this.product,
+    required this.onAddToCart,
   });
 
   @override
@@ -20,8 +20,8 @@ class ProductoCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 6,
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 8,
             offset: const Offset(0, 2),
           ),
         ],
@@ -29,49 +29,48 @@ class ProductoCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Imagen del producto
+          // Product image
           Expanded(
             flex: 3,
             child: Stack(
               children: [
                 ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(12),
+                  ),
                   child: Container(
                     width: double.infinity,
                     color: Colors.grey[100],
-                    child: producto.imagenes.isNotEmpty &&
-                            producto.imagenes.first.startsWith('http')
+                    child: product.images.isNotEmpty && product.images.first.startsWith('http')
                         ? CachedNetworkImage(
-                            imageUrl: producto.imagenes.first,
+                            imageUrl: product.images.first,
                             fit: BoxFit.cover,
                             placeholder: (context, url) => const Center(
-                              child: CircularProgressIndicator(strokeWidth: 2),
+                              child: CircularProgressIndicator(),
                             ),
                             errorWidget: (context, url, error) => const Center(
-                              child: Icon(Icons.image_not_supported,
-                                  size: 40, color: Colors.grey),
+                              child: Icon(Icons.image, size: 40, color: Colors.grey),
                             ),
                           )
                         : const Center(
-                            child: Icon(Icons.image,
-                                size: 40, color: Colors.grey),
+                            child: Icon(Icons.image, size: 40, color: Colors.grey),
                           ),
                   ),
                 ),
-
-                // Etiqueta de descuento
-                if (producto.tieneDescuento)
+                
+                // Discount badge
+                if (product.hasDiscount)
                   Positioned(
                     top: 8,
                     left: 8,
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
-                        color: Colors.redAccent,
+                        color: Colors.red,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
-                        '-${producto.porcentajeDescuento.toInt()}%',
+                        '-${product.discountPercentage.toInt()}%',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 10,
@@ -83,8 +82,8 @@ class ProductoCard extends StatelessWidget {
               ],
             ),
           ),
-
-          // Información del producto
+          
+          // Product info
           Expanded(
             flex: 2,
             child: Padding(
@@ -92,9 +91,9 @@ class ProductoCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Nombre
+                  // Product name
                   Text(
-                    producto.nombre,
+                    product.name,
                     style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -102,29 +101,29 @@ class ProductoCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-
+                  
                   const SizedBox(height: 4),
-
-                  // Unidad
+                  
+                  // Unit
                   Text(
-                    'Por ${producto.unidad}',
+                    'Por ${product.unit}',
                     style: TextStyle(
                       fontSize: 10,
                       color: Colors.grey[600],
                     ),
                   ),
-
+                  
                   const Spacer(),
-
-                  // Precio y botón agregar
+                  
+                  // Price and add button
                   Row(
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (producto.tieneDescuento)
+                          if (product.hasDiscount)
                             Text(
-                              'Bs ${producto.precioOriginal!.toStringAsFixed(2)}',
+                              'Bs ${product.originalPrice!.toStringAsFixed(2)}',
                               style: const TextStyle(
                                 fontSize: 10,
                                 decoration: TextDecoration.lineThrough,
@@ -132,7 +131,7 @@ class ProductoCard extends StatelessWidget {
                               ),
                             ),
                           Text(
-                            'Bs ${producto.precio.toStringAsFixed(2)}',
+                            'Bs ${product.price.toStringAsFixed(2)}',
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
@@ -141,12 +140,12 @@ class ProductoCard extends StatelessWidget {
                           ),
                         ],
                       ),
-
+                      
                       const Spacer(),
-
-                      // Botón agregar al carrito
+                      
+                      // Add to cart button
                       GestureDetector(
-                        onTap: onAgregarAlCarrito,
+                        onTap: onAddToCart,
                         child: Container(
                           width: 28,
                           height: 28,

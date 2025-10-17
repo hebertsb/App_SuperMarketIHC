@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supermarket_delivery_app/data/producto.dart';
-import 'package:supermarket_delivery_app/widgets/product_card.dart';
+import '../../models/product.dart';
+import '../../widgets/product_card.dart';
 import '../../widgets/search_bar.dart';
+import '../../data/mock_data.dart';
 
-class ListaProductosScreen extends ConsumerWidget {
-  const ListaProductosScreen({super.key});
+class ProductListScreen extends ConsumerWidget {
+  final String storeId;
+
+  const ProductListScreen({
+    super.key,
+    required this.storeId,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,26 +22,26 @@ class ListaProductosScreen extends ConsumerWidget {
         backgroundColor: const Color(0xFFE53935),
         actions: [
           IconButton(
-            onPressed: () => context.push('/carrito'),
+            onPressed: () => context.push('/cart'),
             icon: const Icon(Icons.shopping_cart),
           ),
         ],
       ),
       body: Column(
         children: [
-          // Barra de búsqueda
+          // Search bar
           Container(
             color: const Color(0xFFE53935),
             padding: const EdgeInsets.all(16),
             child: CustomSearchBar(
               hintText: 'Buscar productos...',
-              onChanged: (valor) {
-                // Implementar lógica de búsqueda
+              onChanged: (value) {
+                // Implementar búsqueda
               },
             ),
           ),
-
-          // Filtro de categorías
+          
+          // Categories filter
           Container(
             height: 50,
             padding: const EdgeInsets.symmetric(vertical: 8),
@@ -43,38 +49,46 @@ class ListaProductosScreen extends ConsumerWidget {
               scrollDirection: Axis.horizontal,
               children: [
                 const SizedBox(width: 16),
-                _construirFiltroCategoria('Todos', true),
-                _construirFiltroCategoria('Frutas', false),
-                _construirFiltroCategoria('Lácteos', false),
-                _construirFiltroCategoria('Cereales', false),
-                _construirFiltroCategoria('Snacks', false),
-                _construirFiltroCategoria('Limpieza', false),
+                _buildCategoryFilter('Todos', true),
+                _buildCategoryFilter('Frutas', false),
+                _buildCategoryFilter('Verduras', false),
+                _buildCategoryFilter('Lácteos', false),
+                _buildCategoryFilter('Carnes', false),
                 const SizedBox(width: 16),
               ],
             ),
           ),
-
-          // Grilla de productos
+          
+          // Products grid
           Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.all(16),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.75,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-              ),
-              itemCount: productos.length,
-              itemBuilder: (context, index) {
-                final producto = productos[index];
-                return ProductoCard(
-                  producto: producto,
-                  onAgregarAlCarrito: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('${producto.nombre} agregado al carrito'),
-                        duration: const Duration(seconds: 1),
-                      ),
+            child: FutureBuilder<List<Product>>(
+              future: _loadProducts(storeId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                final products = snapshot.data ?? [];
+                return GridView.builder(
+                  padding: const EdgeInsets.all(16),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.75,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                  ),
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    final product = products[index];
+                    return ProductCard(
+                      product: product,
+                      onAddToCart: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('${product.name} agregado al carrito'),
+                            duration: const Duration(seconds: 1),
+                          ),
+                        );
+                      },
                     );
                   },
                 );
@@ -86,18 +100,25 @@ class ListaProductosScreen extends ConsumerWidget {
     );
   }
 
-  Widget _construirFiltroCategoria(String etiqueta, bool seleccionado) {
+  Widget _buildCategoryFilter(String label, bool isSelected) {
     return Container(
       margin: const EdgeInsets.only(right: 8),
       child: FilterChip(
-        label: Text(etiqueta),
-        selected: seleccionado,
+        label: Text(label),
+        selected: isSelected,
         onSelected: (selected) {
-          // Implementar filtrado aquí
+          // Implementar filtro
         },
         selectedColor: const Color(0xFFE53935).withValues(alpha: 0.2),
         checkmarkColor: const Color(0xFFE53935),
       ),
     );
   }
+}
+
+Future<List<Product>> _loadProducts(String storeId) async {
+  // Simular un pequeño delay para mostrar el loading
+  await Future.delayed(const Duration(milliseconds: 300));
+  // Usar datos mock (funciona en web y nativo)
+  return MockData.getProducts(storeId);
 }

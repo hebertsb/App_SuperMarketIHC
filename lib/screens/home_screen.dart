@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supermarket_delivery_app/data/producto.dart';
-import 'package:supermarket_delivery_app/widgets/product_card.dart';
+import '../widgets/store_card.dart';
 import '../widgets/category_chip.dart';
 import '../widgets/search_bar.dart';
 import '../widgets/promotion_banner.dart';
-import '../models/producto.dart';
+import '../models/store.dart';
+import '../data/mock_data.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -17,10 +17,10 @@ class HomeScreen extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xFFE53935),
         elevation: 0,
-        title: Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Entregar en',
               style: TextStyle(
                 fontSize: 12,
@@ -28,7 +28,7 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
             Row(
-              children: const [
+              children: [
                 Icon(Icons.location_on, size: 16),
                 SizedBox(width: 4),
                 Text(
@@ -46,7 +46,7 @@ class HomeScreen extends ConsumerWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () => context.push('/carrito'),
+            onPressed: () => context.push('/cart'),
             icon: const Icon(Icons.shopping_cart_outlined),
           ),
           IconButton(
@@ -59,7 +59,7 @@ class HomeScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header con gradiente y buscador
+            // Header con gradiente
             Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -71,19 +71,26 @@ class HomeScreen extends ConsumerWidget {
                   ],
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: CustomSearchBar(
-                  hintText: 'Busca productos',
-                  onChanged: (value) {
-                    // Lógica de búsqueda
-                  },
-                ),
+              child: Column(
+                children: [
+                  // Barra de búsqueda
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: CustomSearchBar(
+                      hintText: 'Busca productos y supermercados',
+                      onChanged: (value) {
+                        // Implementar búsqueda
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                ],
               ),
             ),
-
+            
+            // Banner de promociones
             const PromotionBanner(),
-
+            
             // Categorías
             Padding(
               padding: const EdgeInsets.all(16),
@@ -103,9 +110,15 @@ class HomeScreen extends ConsumerWidget {
                     child: Row(
                       children: [
                         CategoryChip(
-                          label: 'Frutas',
-                          icon: Icons.apple,
+                          label: 'Frutas y Verduras',
+                          icon: Icons.eco,
                           color: Colors.green,
+                          onTap: () {},
+                        ),
+                        CategoryChip(
+                          label: 'Carnes',
+                          icon: Icons.restaurant,
+                          color: Colors.red,
                           onTap: () {},
                         ),
                         CategoryChip(
@@ -115,21 +128,9 @@ class HomeScreen extends ConsumerWidget {
                           onTap: () {},
                         ),
                         CategoryChip(
-                          label: 'Cereales',
-                          icon: Icons.rice_bowl,
+                          label: 'Panadería',
+                          icon: Icons.bakery_dining,
                           color: Colors.orange,
-                          onTap: () {},
-                        ),
-                        CategoryChip(
-                          label: 'Snacks',
-                          icon: Icons.fastfood,
-                          color: Colors.purple,
-                          onTap: () {},
-                        ),
-                        CategoryChip(
-                          label: 'Limpieza',
-                          icon: Icons.cleaning_services,
-                          color: Colors.teal,
                           onTap: () {},
                         ),
                       ],
@@ -138,7 +139,7 @@ class HomeScreen extends ConsumerWidget {
                 ],
               ),
             ),
-
+            
             // Ofertas de la semana
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -156,7 +157,7 @@ class HomeScreen extends ConsumerWidget {
                         ),
                       ),
                       TextButton(
-                        onPressed: () => context.push('/products'),
+                        onPressed: () {},
                         child: const Text('Ver Todas'),
                       ),
                     ],
@@ -172,7 +173,9 @@ class HomeScreen extends ConsumerWidget {
                       children: [
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(8),
@@ -215,45 +218,51 @@ class HomeScreen extends ConsumerWidget {
                 ],
               ),
             ),
-
+            
             const SizedBox(height: 24),
-
-            // 🔥 Productos destacados (reemplaza los supermercados)
+            
+            // Supermercados
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Productos destacados',
+                    'Supermercados cerca de ti',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: 12),
-
-                  // Grilla de productos
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: productos.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.75,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                    ),
-                    itemBuilder: (context, index) {
-                      final producto = productos[index];
-                      return ProductoCard(
-                        producto: producto,
-                        onAgregarAlCarrito: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('${producto.nombre} agregado al carrito'),
-                              duration: const Duration(seconds: 1),
-                            ),
+                  FutureBuilder<List<Store>>(
+                    future: _loadStores(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const SizedBox(
+                          height: 120,
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      }
+                      final stores = snapshot.data ?? [];
+                      if (stores.isEmpty) {
+                        return const SizedBox(
+                          height: 120,
+                          child: Center(
+                            child: Text('No hay supermercados disponibles'),
+                          ),
+                        );
+                      }
+                      return ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: stores.length,
+                        separatorBuilder: (context, index) => const SizedBox(height: 12),
+                        itemBuilder: (context, index) {
+                          final store = stores[index];
+                          return StoreCard(
+                            store: store,
+                            onTap: () => context.push('/products/${store.id}'),
                           );
                         },
                       );
@@ -262,7 +271,7 @@ class HomeScreen extends ConsumerWidget {
                 ],
               ),
             ),
-
+            
             const SizedBox(height: 80),
           ],
         ),
@@ -296,4 +305,11 @@ class HomeScreen extends ConsumerWidget {
       ),
     );
   }
+}
+
+Future<List<Store>> _loadStores() async {
+  // Simular un pequeño delay para mostrar el loading
+  await Future.delayed(const Duration(milliseconds: 300));
+  // Usar datos mock (funciona en web y nativo)
+  return MockData.getStores();
 }
