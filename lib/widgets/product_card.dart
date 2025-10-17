@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../models/product.dart';
+import '../models/producto.dart';
 
 class ProductCard extends StatelessWidget {
-  final Product product;
+  final Producto product;
   final VoidCallback onAddToCart;
 
   const ProductCard({
@@ -41,9 +41,9 @@ class ProductCard extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     color: Colors.grey[100],
-                    child: product.images.isNotEmpty && product.images.first.startsWith('http')
+                    child: product.imagenes.isNotEmpty && product.imagenes.first.startsWith('http')
                         ? CachedNetworkImage(
-                            imageUrl: product.images.first,
+                            imageUrl: product.imagenes.first,
                             fit: BoxFit.cover,
                             placeholder: (context, url) => const Center(
                               child: CircularProgressIndicator(),
@@ -59,7 +59,7 @@ class ProductCard extends StatelessWidget {
                 ),
                 
                 // Discount badge
-                if (product.hasDiscount)
+                if (product.tieneDescuento)
                   Positioned(
                     top: 8,
                     left: 8,
@@ -70,7 +70,7 @@ class ProductCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
-                        '-${product.discountPercentage.toInt()}%',
+                        '-${product.porcentajeDescuento.toInt()}%',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 10,
@@ -93,7 +93,7 @@ class ProductCard extends StatelessWidget {
                 children: [
                   // Product name
                   Text(
-                    product.name,
+                    product.nombre,
                     style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -106,7 +106,7 @@ class ProductCard extends StatelessWidget {
                   
                   // Unit
                   Text(
-                    'Por ${product.unit}',
+                    'Por ${product.unidad}',
                     style: TextStyle(
                       fontSize: 10,
                       color: Colors.grey[600],
@@ -121,9 +121,9 @@ class ProductCard extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (product.hasDiscount)
+                          if (product.tieneDescuento)
                             Text(
-                              'Bs ${product.originalPrice!.toStringAsFixed(2)}',
+                              'Bs ${product.precioOriginal!.toStringAsFixed(2)}',
                               style: const TextStyle(
                                 fontSize: 10,
                                 decoration: TextDecoration.lineThrough,
@@ -131,7 +131,7 @@ class ProductCard extends StatelessWidget {
                               ),
                             ),
                           Text(
-                            'Bs ${product.price.toStringAsFixed(2)}',
+                            'Bs ${product.precio.toStringAsFixed(2)}',
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,

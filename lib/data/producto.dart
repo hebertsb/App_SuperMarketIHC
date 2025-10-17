@@ -2,6 +2,7 @@ import '../models/producto.dart';
 
 final List<Producto> productos = [
   Producto(
+    idTienda: '1',
     id: 'p1',
     nombre: 'Manzana Roja',
     descripcion: 'Manzanas frescas y jugosas de cosecha local. Perfectas para snacks o jugos naturales.',
@@ -24,6 +25,7 @@ final List<Producto> productos = [
     },
   ),
   Producto(
+    idTienda: '1',
     id: 'p2',
     nombre: 'Leche Entera Pil 1L',
     descripcion: 'Leche entera pasteurizada, fuente natural de calcio y proteínas.',
@@ -46,6 +48,7 @@ final List<Producto> productos = [
     },
   ),
   Producto(
+    idTienda: '1',
     id: 'p3',
     nombre: 'Arroz Grano de Oro 5kg',
     descripcion: 'Arroz blanco tipo grano largo, ideal para acompañar tus comidas diarias.',
@@ -68,6 +71,7 @@ final List<Producto> productos = [
     },
   ),
   Producto(
+    idTienda: '1',
     id: 'p4',
     nombre: 'Coca-Cola 2L',
     descripcion: 'Refresco carbonatado clásico, ideal para compartir en familia o con amigos.',
@@ -89,6 +93,7 @@ final List<Producto> productos = [
     },
   ),
   Producto(
+    idTienda: '1',
     id: 'p5',
     nombre: 'Detergente OMO 2kg',
     descripcion: 'Detergente en polvo con fórmula avanzada para limpieza profunda de la ropa.',
@@ -104,6 +109,7 @@ final List<Producto> productos = [
     cantidadResenas: 22,
   ),
   Producto(
+    idTienda: '1',
     id: 'p6',
     nombre: 'Yogur Natural Griego',
     descripcion: 'Yogur natural sin azúcar, cremoso y con alto contenido de proteínas.',
@@ -126,6 +132,7 @@ final List<Producto> productos = [
     },
   ),
   Producto(
+    idTienda: '1',
     id: 'p7',
     nombre: 'Papas Fritas Lay’s Clásicas 150g',
     descripcion: 'Crujientes papas fritas con el sabor clásico de siempre.',

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../models/product.dart';
+import '../../models/producto.dart';
 import '../../widgets/product_card.dart';
 import '../../widgets/search_bar.dart';
 import '../../data/mock_data.dart';
@@ -61,7 +61,7 @@ class ProductListScreen extends ConsumerWidget {
           
           // Products grid
           Expanded(
-            child: FutureBuilder<List<Product>>(
+            child: FutureBuilder<List<Producto>>(
               future: _loadProducts(storeId),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -84,7 +84,7 @@ class ProductListScreen extends ConsumerWidget {
                       onAddToCart: () {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('${product.name} agregado al carrito'),
+                            content: Text('${product.nombre} agregado al carrito'),
                             duration: const Duration(seconds: 1),
                           ),
                         );
@@ -116,7 +116,7 @@ class ProductListScreen extends ConsumerWidget {
   }
 }
 
-Future<List<Product>> _loadProducts(String storeId) async {
+Future<List<Producto>> _loadProducts(String storeId) async {
   // Simular un pequeño delay para mostrar el loading
   await Future.delayed(const Duration(milliseconds: 300));
   // Usar datos mock (funciona en web y nativo)
