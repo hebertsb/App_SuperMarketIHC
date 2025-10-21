@@ -5,169 +5,163 @@ import '../models/producto.dart';
 class ProductoCard extends StatelessWidget {
   final Producto producto;
   final VoidCallback onAgregarAlCarrito;
+  final VoidCallback onVerDetalle;
 
   const ProductoCard({
     super.key,
     required this.producto,
     required this.onAgregarAlCarrito,
+    required this.onVerDetalle,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Imagen del producto
-          Expanded(
-            flex: 3,
-            child: Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                  child: Container(
-                    width: double.infinity,
-                    color: Colors.grey[100],
-                    child: producto.imagenes.isNotEmpty &&
-                            producto.imagenes.first.startsWith('http')
-                        ? CachedNetworkImage(
-                            imageUrl: producto.imagenes.first,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => const Center(
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            ),
-                            errorWidget: (context, url, error) => const Center(
-                              child: Icon(Icons.image_not_supported,
-                                  size: 40, color: Colors.grey),
-                            ),
-                          )
-                        : const Center(
-                            child: Icon(Icons.image,
-                                size: 40, color: Colors.grey),
-                          ),
-                  ),
-                ),
-
-                // Etiqueta de descuento
-                if (producto.tieneDescuento)
-                  Positioned(
-                    top: 8,
-                    left: 8,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: Colors.redAccent,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        '-${producto.porcentajeDescuento.toInt()}%',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
+    return GestureDetector(
+      onTap: onVerDetalle,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
             ),
-          ),
-
-          // Información del producto
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Imagen del producto
+            Expanded(
+              flex: 3,
+              child: Stack(
                 children: [
-                  // Nombre
-                  Text(
-                    producto.nombre,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-
-                  const SizedBox(height: 4),
-
-                  // Unidad
-                  Text(
-                    'Por ${producto.unidad}',
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.grey[600],
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                    child: Container(
+                      width: double.infinity,
+                      color: Colors.grey[100],
+                      child: producto.imagenes.isNotEmpty &&
+                              producto.imagenes.first.startsWith('http')
+                          ? Image.network(
+                              producto.imagenes.first,
+                              fit: BoxFit.cover,
+                            )
+                          : const Center(
+                              child: Icon(Icons.image, size: 40, color: Colors.grey),
+                            ),
                     ),
                   ),
 
-                  const Spacer(),
-
-                  // Precio y botón agregar
-                  Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (producto.tieneDescuento)
-                            Text(
-                              'Bs ${producto.precioOriginal!.toStringAsFixed(2)}',
-                              style: const TextStyle(
-                                fontSize: 10,
-                                decoration: TextDecoration.lineThrough,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          Text(
-                            'Bs ${producto.precio.toStringAsFixed(2)}',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFFE53935),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      const Spacer(),
-
-                      // Botón agregar al carrito
-                      GestureDetector(
-                        onTap: onAgregarAlCarrito,
-                        child: Container(
-                          width: 28,
-                          height: 28,
-                          decoration: const BoxDecoration(
-                            color: Color(0xFFE53935),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.add,
+                  // Etiqueta de descuento
+                  if (producto.tieneDescuento)
+                    Positioned(
+                      top: 8,
+                      left: 8,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: Colors.redAccent,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          '-${producto.porcentajeDescuento.toInt()}%',
+                          style: const TextStyle(
                             color: Colors.white,
-                            size: 16,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
                 ],
               ),
             ),
-          ),
-        ],
+
+            // Información del producto
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Nombre
+                    Text(
+                      producto.nombre,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+
+                    // Unidad
+                    Text(
+                      'Por ${producto.unidad}',
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    const Spacer(),
+
+                    // Precio y botón agregar
+                    Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (producto.tieneDescuento)
+                              Text(
+                                'Bs ${producto.precioOriginal!.toStringAsFixed(2)}',
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  decoration: TextDecoration.lineThrough,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            Text(
+                              'Bs ${producto.precio.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFFE53935),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Spacer(),
+
+                        // Botón agregar
+                        GestureDetector(
+                          onTap: onAgregarAlCarrito,
+                          child: Container(
+                            width: 28,
+                            height: 28,
+                            decoration: const BoxDecoration(
+                              color: Color(0xFFE53935),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.add,
+                              color: Colors.white,
+                              size: 16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

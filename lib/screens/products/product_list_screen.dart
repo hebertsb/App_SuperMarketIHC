@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supermarket_delivery_app/data/producto.dart';
+import 'package:supermarket_delivery_app/screens/products/detalle_producto.dart';
 import 'package:supermarket_delivery_app/widgets/product_card.dart';
 import '../../widgets/search_bar.dart';
 
@@ -69,6 +70,28 @@ class ListaProductosScreen extends ConsumerWidget {
                 final producto = productos[index];
                 return ProductoCard(
                   producto: producto,
+                  onVerDetalle: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(24)),
+                      ),
+                      builder: (context) {
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.9,
+                          child: DetalleProducto(
+                            producto: producto,
+                            masProductos: productos
+                                .where((p) => p.id != producto.id)
+                                .take(6)
+                                .toList(),
+                          ),
+                        );
+                      },
+                    );
+                  },
                   onAgregarAlCarrito: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

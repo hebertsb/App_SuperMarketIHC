@@ -4,7 +4,8 @@ final List<Producto> productos = [
   Producto(
     id: 'p1',
     nombre: 'Manzana Roja',
-    descripcion: 'Manzanas frescas y jugosas de cosecha local. Perfectas para snacks o jugos naturales.',
+    descripcion:
+        'Manzanas frescas y jugosas de cosecha local. Perfectas para snacks o jugos naturales.',
     precio: 4.50,
     precioOriginal: 5.00,
     imagenes: [
@@ -26,11 +27,12 @@ final List<Producto> productos = [
   Producto(
     id: 'p2',
     nombre: 'Leche Entera Pil 1L',
-    descripcion: 'Leche entera pasteurizada, fuente natural de calcio y proteínas.',
+    descripcion:
+        'Leche entera pasteurizada, fuente natural de calcio y proteínas.',
     precio: 7.00,
     precioOriginal: 7.50,
     imagenes: [
-      'https://cdn.pixabay.com/photo/2015/12/08/00/26/milk-1081971_1280.jpg',
+      'https://media.istockphoto.com/id/1397790017/photo/a-close-up-view-of-an-unrecognizable-females-hand-holding-some-beauty-product.jpg?s=2048x2048&w=is&k=20&c=xTpB5S7QCkiVqt__Zwxx8pnoO5EG8TMWV0bT1raAjI8=',
     ],
     categoria: 'Lácteos',
     unidad: 'litro',
@@ -48,11 +50,12 @@ final List<Producto> productos = [
   Producto(
     id: 'p3',
     nombre: 'Arroz Grano de Oro 5kg',
-    descripcion: 'Arroz blanco tipo grano largo, ideal para acompañar tus comidas diarias.',
+    descripcion:
+        'Arroz blanco tipo grano largo, ideal para acompañar tus comidas diarias.',
     precio: 32.50,
     precioOriginal: 35.00,
     imagenes: [
-      'https://cdn.pixabay.com/photo/2017/03/14/10/07/rice-2143491_1280.jpg',
+      'https://cdn.pixabay.com/photo/2017/07/28/16/30/bee-pollen-2549125_960_720.jpg',
     ],
     categoria: 'Cereales',
     unidad: 'bolsa',
@@ -70,11 +73,12 @@ final List<Producto> productos = [
   Producto(
     id: 'p4',
     nombre: 'Coca-Cola 2L',
-    descripcion: 'Refresco carbonatado clásico, ideal para compartir en familia o con amigos.',
+    descripcion:
+        'Refresco carbonatado clásico, ideal para compartir en familia o con amigos.',
     precio: 10.00,
     precioOriginal: 11.00,
     imagenes: [
-      'https://cdn.pixabay.com/photo/2017/06/10/07/18/coca-cola-2384739_1280.jpg',
+      'https://cdn.pixabay.com/photo/2017/08/09/15/44/coca-cola-2614937_960_720.jpg',
     ],
     categoria: 'Bebidas',
     unidad: 'botella',
@@ -91,10 +95,11 @@ final List<Producto> productos = [
   Producto(
     id: 'p5',
     nombre: 'Detergente OMO 2kg',
-    descripcion: 'Detergente en polvo con fórmula avanzada para limpieza profunda de la ropa.',
+    descripcion:
+        'Detergente en polvo con fórmula avanzada para limpieza profunda de la ropa.',
     precio: 28.90,
     imagenes: [
-      'https://cdn.pixabay.com/photo/2017/10/17/19/24/laundry-2867051_1280.jpg',
+      'https://cdn.pixabay.com/photo/2020/09/15/13/54/bottles-5573666_960_720.jpg',
     ],
     categoria: 'Limpieza',
     unidad: 'bolsa',
@@ -106,11 +111,12 @@ final List<Producto> productos = [
   Producto(
     id: 'p6',
     nombre: 'Yogur Natural Griego',
-    descripcion: 'Yogur natural sin azúcar, cremoso y con alto contenido de proteínas.',
+    descripcion:
+        'Yogur natural sin azúcar, cremoso y con alto contenido de proteínas.',
     precio: 9.50,
     precioOriginal: 10.00,
     imagenes: [
-      'https://cdn.pixabay.com/photo/2015/05/31/13/39/yogurt-791964_1280.jpg',
+      'https://cdn.pixabay.com/photo/2016/06/07/17/15/yogurt-1442034_1280.jpg',
     ],
     categoria: 'Lácteos',
     unidad: 'vaso (200g)',
@@ -132,7 +138,7 @@ final List<Producto> productos = [
     precio: 9.00,
     precioOriginal: 10.00,
     imagenes: [
-      'https://cdn.pixabay.com/photo/2017/06/02/18/24/chips-2367112_1280.jpg',
+      'https://media.istockphoto.com/id/1316351845/photo/delicious-crispy-potato-chips-on-the-table.jpg?s=2048x2048&w=is&k=20&c=jFB-objklLMTpYaUy7f8XfXP1mmXhs7Rzb9MhAaOWtk=',
     ],
     categoria: 'Snacks',
     unidad: 'bolsa',

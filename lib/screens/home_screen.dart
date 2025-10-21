@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supermarket_delivery_app/data/producto.dart';
+import 'package:supermarket_delivery_app/screens/products/detalle_producto.dart';
 import 'package:supermarket_delivery_app/widgets/product_card.dart';
 import '../widgets/category_chip.dart';
 import '../widgets/search_bar.dart';
@@ -238,7 +239,8 @@ class HomeScreen extends ConsumerWidget {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: productos.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: 0.75,
                       crossAxisSpacing: 12,
@@ -248,10 +250,34 @@ class HomeScreen extends ConsumerWidget {
                       final producto = productos[index];
                       return ProductoCard(
                         producto: producto,
+                        onVerDetalle: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(24)),
+                            ),
+                            builder: (context) {
+                              return SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.9,
+                                child: DetalleProducto(
+                                  producto: producto,
+                                  masProductos: productos
+                                      .where((p) => p.id != producto.id)
+                                      .take(6)
+                                      .toList(),
+                                ),
+                              );
+                            },
+                          );
+                        },
                         onAgregarAlCarrito: () {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('${producto.nombre} agregado al carrito'),
+                              content: Text(
+                                  '${producto.nombre} agregado al carrito'),
                               duration: const Duration(seconds: 1),
                             ),
                           );
