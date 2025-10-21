@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supermarket_delivery_app/screens/products/product_list_screen.dart';
 import 'screens/home_screen.dart';
+import 'screens/splash_screen.dart';
 import 'screens/auth/login_screen.dart';
+import 'screens/products/product_list_screen.dart';
 import 'screens/cart/cart_screen.dart';
 import 'screens/orders/order_tracking_screen.dart';
 import 'screens/profile/profile_screen.dart';
+import 'screens/dev_tools_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  
+  // Inicializar Firebase (comentado para funcionar sin configuración)
+  // await Firebase.initializeApp();
+  
   runApp(
     const ProviderScope(
       child: SupermarketDeliveryApp(),
@@ -51,8 +56,12 @@ class SupermarketDeliveryApp extends StatelessWidget {
 }
 
 final _router = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/splash',
   routes: [
+    GoRoute(
+      path: '/splash',
+      builder: (context, state) => const SplashScreen(),
+    ),
     GoRoute(
       path: '/',
       builder: (context, state) => const HomeScreen(),
@@ -62,11 +71,11 @@ final _router = GoRouter(
       builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
-      path: '/products',
-      builder: (context, state) => const ListaProductosScreen(),
+      path: '/products/:storeId',
+      builder: (context, state) => ListaProductosScreen(),
     ),
     GoRoute(
-      path: '/carrito',
+      path: '/cart',
       builder: (context, state) => const CartScreen(),
     ),
     GoRoute(
@@ -78,6 +87,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/profile',
       builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
+      path: '/dev-tools',
+      builder: (context, state) => const DevToolsScreen(),
     ),
   ],
 );

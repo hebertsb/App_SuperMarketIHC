@@ -79,14 +79,19 @@ class ListaProductosScreen extends ConsumerWidget {
                             BorderRadius.vertical(top: Radius.circular(24)),
                       ),
                       builder: (context) {
-                        return SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.9,
-                          child: DetalleProducto(
-                            producto: producto,
-                            masProductos: productos
-                                .where((p) => p.id != producto.id)
-                                .take(6)
-                                .toList(),
+                        return Padding(
+                          padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom,
+                          ),
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.9,
+                            child: DetalleProducto(
+                              producto: producto,
+                              masProductos: productos
+                                  .where((p) => p.id != producto.id)
+                                  .take(6)
+                                  .toList(),
+                            ),
                           ),
                         );
                       },
@@ -95,7 +100,8 @@ class ListaProductosScreen extends ConsumerWidget {
                   onAgregarAlCarrito: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('${producto.nombre} agregado al carrito'),
+                        content:
+                            Text('${producto.nombre} agregado al carrito'),
                         duration: const Duration(seconds: 1),
                       ),
                     );

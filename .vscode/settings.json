@@ -67,5 +67,6 @@
     "unidad",
     "Tomate",
     "Tomates"
-  ]
+  ],
+  "cmake.sourceDirectory": "/workspaces/App_SuperMarketIHC/linux"
 }

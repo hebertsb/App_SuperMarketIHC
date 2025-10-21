@@ -1,5 +1,6 @@
 class Producto {
   final String id;
+  final String idTienda; // ID del supermercado
   final String nombre;
   final String descripcion;
   final double precio;
@@ -15,6 +16,7 @@ class Producto {
 
   Producto({
     required this.id,
+    required this.idTienda,
     required this.nombre,
     required this.descripcion,
     required this.precio,
@@ -39,6 +41,7 @@ class Producto {
   factory Producto.desdeJson(Map<String, dynamic> json) {
     return Producto(
       id: json['id'],
+      idTienda: json['idTienda'],
       nombre: json['nombre'],
       descripcion: json['descripcion'],
       precio: json['precio'].toDouble(),
@@ -57,6 +60,7 @@ class Producto {
   Map<String, dynamic> aJson() {
     return {
       'id': id,
+      'idTienda': idTienda,
       'nombre': nombre,
       'descripcion': descripcion,
       'precio': precio,

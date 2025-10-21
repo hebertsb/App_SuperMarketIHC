@@ -2,6 +2,7 @@ import '../models/producto.dart';
 
 final List<Producto> productos = [
   Producto(
+    idTienda: '1',
     id: 'p1',
     nombre: 'Manzana Roja',
     descripcion:
@@ -25,6 +26,7 @@ final List<Producto> productos = [
     },
   ),
   Producto(
+    idTienda: '1',
     id: 'p2',
     nombre: 'Leche Entera Pil 1L',
     descripcion:
@@ -48,6 +50,7 @@ final List<Producto> productos = [
     },
   ),
   Producto(
+    idTienda: '1',
     id: 'p3',
     nombre: 'Arroz Grano de Oro 5kg',
     descripcion:
@@ -71,6 +74,7 @@ final List<Producto> productos = [
     },
   ),
   Producto(
+    idTienda: '1',
     id: 'p4',
     nombre: 'Coca-Cola 2L',
     descripcion:
@@ -93,6 +97,7 @@ final List<Producto> productos = [
     },
   ),
   Producto(
+    idTienda: '1',
     id: 'p5',
     nombre: 'Detergente OMO 2kg',
     descripcion:
@@ -109,6 +114,7 @@ final List<Producto> productos = [
     cantidadResenas: 22,
   ),
   Producto(
+    idTienda: '1',
     id: 'p6',
     nombre: 'Yogur Natural Griego',
     descripcion:
@@ -132,6 +138,7 @@ final List<Producto> productos = [
     },
   ),
   Producto(
+    idTienda: '1',
     id: 'p7',
     nombre: 'Papas Fritas Lay’s Clásicas 150g',
     descripcion: 'Crujientes papas fritas con el sabor clásico de siempre.',
