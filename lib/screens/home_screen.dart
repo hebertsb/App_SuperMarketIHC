@@ -7,7 +7,8 @@ import 'package:supermarket_delivery_app/widgets/product_card.dart';
 import '../widgets/category_chip.dart';
 import '../widgets/search_bar.dart';
 import '../widgets/promotion_banner.dart';
-import '../models/producto.dart';
+import '../providers/orders_provider.dart';
+import '../models/order.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -47,7 +48,7 @@ class HomeScreen extends ConsumerWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () => context.push('/carrito'),
+            onPressed: () => context.push('/cart'),
             icon: const Icon(Icons.shopping_cart_outlined),
           ),
           IconButton(
@@ -84,6 +85,9 @@ class HomeScreen extends ConsumerWidget {
             ),
 
             const PromotionBanner(),
+
+            // Pedidos Activos
+            _buildActiveOrders(ref, context),
 
             // Categorías
             Padding(
@@ -273,15 +277,6 @@ class HomeScreen extends ConsumerWidget {
                             },
                           );
                         },
-                        onAgregarAlCarrito: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                  '${producto.nombre} agregado al carrito'),
-                              duration: const Duration(seconds: 1),
-                            ),
-                          );
-                        },
                       );
                     },
                   ),
@@ -319,6 +314,200 @@ class HomeScreen extends ConsumerWidget {
             label: 'Perfil',
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildActiveOrders(WidgetRef ref, BuildContext context) {
+    final activeOrders = ref.watch(activeOrdersProvider);
+
+    if (activeOrders.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Pedidos Activos',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    // TODO: Navegar a pantalla de todos los pedidos
+                  },
+                  child: const Text('Ver todos'),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+          SizedBox(
+            height: 140,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: activeOrders.length,
+              itemBuilder: (context, index) {
+                final order = activeOrders[index];
+                return _buildOrderCard(order, context);
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOrderCard(Order order, BuildContext context) {
+    Color statusColor;
+    String statusText;
+    IconData statusIcon;
+
+    switch (order.estado) {
+      case OrderStatus.confirmado:
+        statusColor = Colors.blue;
+        statusText = 'Confirmado';
+        statusIcon = Icons.check_circle;
+        break;
+      case OrderStatus.preparando:
+        statusColor = Colors.orange;
+        statusText = 'Preparando';
+        statusIcon = Icons.restaurant;
+        break;
+      case OrderStatus.enCamino:
+        statusColor = Colors.green;
+        statusText = 'En camino';
+        statusIcon = Icons.delivery_dining;
+        break;
+      default:
+        statusColor = Colors.grey;
+        statusText = 'Pendiente';
+        statusIcon = Icons.schedule;
+    }
+
+    return GestureDetector(
+      onTap: () {
+        context.push('/tracking/${order.id}');
+      },
+      child: Container(
+        width: 280,
+        margin: const EdgeInsets.only(right: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey[300]!),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: statusColor.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    statusIcon,
+                    color: statusColor,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Pedido #${order.id.substring(order.id.length - 6)}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                      ),
+                      Text(
+                        order.nombreTienda,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey[600],
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: statusColor.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Text(
+                statusText,
+                style: TextStyle(
+                  color: statusColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            const Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${order.items.length} productos',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[600],
+                  ),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Seguir',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: const Color(0xFFE53935),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    const Icon(
+                      Icons.arrow_forward,
+                      size: 16,
+                      color: Color(0xFFE53935),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

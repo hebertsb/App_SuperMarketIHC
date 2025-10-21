@@ -6,6 +6,7 @@ import 'screens/splash_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/products/product_list_screen.dart';
 import 'screens/cart/cart_screen.dart';
+import 'screens/cart/checkout_screen.dart';
 import 'screens/orders/order_tracking_screen.dart';
 import 'screens/profile/profile_screen.dart';
 import 'screens/dev_tools_screen.dart';
@@ -77,6 +78,12 @@ final _router = GoRouter(
     GoRoute(
       path: '/cart',
       builder: (context, state) => const CartScreen(),
+    ),
+    GoRoute(
+      path: '/checkout/:storeId',
+      builder: (context, state) => CheckoutScreen(
+        storeId: state.pathParameters['storeId']!,
+      ),
     ),
     GoRoute(
       path: '/tracking/:orderId',

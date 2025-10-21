@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/producto.dart';
+import '../providers/cart_provider.dart';
 
-class ProductoCard extends StatelessWidget {
+class ProductoCard extends ConsumerWidget {
   final Producto producto;
-  final VoidCallback onAgregarAlCarrito;
   final VoidCallback onVerDetalle;
 
   const ProductoCard({
     super.key,
     required this.producto,
-    required this.onAgregarAlCarrito,
     required this.onVerDetalle,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: onVerDetalle,
       child: Container(
@@ -139,7 +138,16 @@ class ProductoCard extends StatelessWidget {
 
                         // Botón agregar
                         GestureDetector(
-                          onTap: onAgregarAlCarrito,
+                          onTap: () {
+                            ref.read(cartProvider.notifier).addProduct(producto);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('${producto.nombre} agregado al carrito'),
+                                duration: const Duration(seconds: 1),
+                                backgroundColor: const Color(0xFFE53935),
+                              ),
+                            );
+                          },
                           child: Container(
                             width: 28,
                             height: 28,

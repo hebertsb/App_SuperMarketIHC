@@ -17,7 +17,7 @@ class ListaProductosScreen extends ConsumerWidget {
         backgroundColor: const Color(0xFFE53935),
         actions: [
           IconButton(
-            onPressed: () => context.push('/carrito'),
+            onPressed: () => context.push('/cart'),
             icon: const Icon(Icons.shopping_cart),
           ),
         ],
@@ -95,15 +95,6 @@ class ListaProductosScreen extends ConsumerWidget {
                           ),
                         );
                       },
-                    );
-                  },
-                  onAgregarAlCarrito: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content:
-                            Text('${producto.nombre} agregado al carrito'),
-                        duration: const Duration(seconds: 1),
-                      ),
                     );
                   },
                 );
