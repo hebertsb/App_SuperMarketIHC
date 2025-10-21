@@ -7,7 +7,7 @@ class MockData {
     return [
       Store(
         id: '1',
-        name: 'Hipermaxi',
+        name: 'Smart Market',
         logo: 'assets/images/hipermaxi_logo.png',
         address: 'Av. Ballivián 1234',
         phone: '+591 2 123456',

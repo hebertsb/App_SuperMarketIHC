@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../models/producto.dart';
+import '../../providers/cart_provider.dart';
 
-class DetalleProducto extends StatefulWidget {
+class DetalleProducto extends ConsumerStatefulWidget {
   final Producto producto;
   final List<Producto> masProductos;
 
@@ -12,11 +15,11 @@ class DetalleProducto extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<DetalleProducto> createState() => _DetalleProductoState();
+  ConsumerState<DetalleProducto> createState() => _DetalleProductoState();
 }
 
-class _DetalleProductoState extends State<DetalleProducto> {
-  int cantidad = 0;
+class _DetalleProductoState extends ConsumerState<DetalleProducto> {
+  int cantidad = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +182,34 @@ class _DetalleProductoState extends State<DetalleProducto> {
                       ),
                       const SizedBox(width: 8),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: cantidad > 0 ? () {
+                          // Añadir al carrito la cantidad seleccionada
+                          for (var i = 0; i < cantidad; i++) {
+                            ref.read(cartProvider.notifier).addProduct(widget.producto);
+                          }
+                          
+                          // Mostrar mensaje de confirmación
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('${widget.producto.nombre} (x$cantidad) agregado al carrito'),
+                              duration: const Duration(seconds: 2),
+                              backgroundColor: const Color(0xFFE53935),
+                              action: SnackBarAction(
+                                label: 'Ver Carrito',
+                                textColor: Colors.white,
+                                onPressed: () {
+                                  Navigator.pop(context); // Cerrar el modal
+                                  context.push('/cart');
+                                },
+                              ),
+                            ),
+                          );
+                          
+                          // Cerrar el modal después de un breve delay
+                          Future.delayed(const Duration(milliseconds: 500), () {
+                            Navigator.pop(context);
+                          });
+                        } : null,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFFF865E),
                           shape: RoundedRectangleBorder(
@@ -188,9 +218,9 @@ class _DetalleProductoState extends State<DetalleProducto> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 12),
                         ),
-                        child: const Text(
-                          "Añadir",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        child: Text(
+                          cantidad > 0 ? "Añadir" : "Selecciona cantidad",
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
