@@ -5,9 +5,11 @@ import 'screens/home_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/products/product_list_screen.dart';
+import 'screens/products/all_products_screen.dart';
 import 'screens/cart/cart_screen.dart';
 import 'screens/cart/checkout_screen.dart';
 import 'screens/orders/order_tracking_screen.dart';
+import 'screens/orders/orders_history_screen.dart';
 import 'screens/profile/profile_screen.dart';
 import 'screens/dev_tools_screen.dart';
 
@@ -78,6 +80,13 @@ final _router = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/products',
+      builder: (context, state) {
+        final category = state.uri.queryParameters['category'];
+        return AllProductsScreen(initialCategory: category);
+      },
+    ),
+    GoRoute(
       path: '/cart',
       builder: (context, state) => const CartScreen(),
     ),
@@ -92,6 +101,10 @@ final _router = GoRouter(
       builder: (context, state) => OrderTrackingScreen(
         orderId: state.pathParameters['orderId']!,
       ),
+    ),
+    GoRoute(
+      path: '/orders',
+      builder: (context, state) => const OrdersHistoryScreen(),
     ),
     GoRoute(
       path: '/profile',

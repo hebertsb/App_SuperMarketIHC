@@ -115,31 +115,31 @@ class HomeScreen extends ConsumerWidget {
                           label: 'Frutas',
                           icon: Icons.apple,
                           color: Colors.green,
-                          onTap: () {},
+                          onTap: () => context.push('/products?category=Frutas'),
                         ),
                         CategoryChip(
                           label: 'Lácteos',
                           icon: Icons.local_drink,
                           color: Colors.blue,
-                          onTap: () {},
+                          onTap: () => context.push('/products?category=Lácteos'),
                         ),
                         CategoryChip(
                           label: 'Cereales',
                           icon: Icons.rice_bowl,
                           color: Colors.orange,
-                          onTap: () {},
+                          onTap: () => context.push('/products?category=Cereales'),
                         ),
                         CategoryChip(
                           label: 'Snacks',
                           icon: Icons.fastfood,
                           color: Colors.purple,
-                          onTap: () {},
+                          onTap: () => context.push('/products?category=Snacks'),
                         ),
                         CategoryChip(
                           label: 'Limpieza',
                           icon: Icons.cleaning_services,
                           color: Colors.teal,
-                          onTap: () {},
+                          onTap: () => context.push('/products?category=Limpieza'),
                         ),
                       ],
                     ),
@@ -954,7 +954,7 @@ class HomeScreen extends ConsumerWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    // TODO: Navegar a pantalla de todos los pedidos
+                    context.push('/orders');
                   },
                   child: const Text('Ver todos'),
                 ),
