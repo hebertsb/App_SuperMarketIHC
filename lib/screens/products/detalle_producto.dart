@@ -53,12 +53,19 @@ class _DetalleProductoState extends ConsumerState<DetalleProducto> {
               // Imagen principal
               ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: Image.network(
-                  p.imagenes.first,
-                  height: 200,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
+                child: p.imagenes.first.startsWith('assets/')
+                    ? Image.asset(
+                        p.imagenes.first,
+                        height: 200,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.network(
+                        p.imagenes.first,
+                        height: 200,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
               ),
               const SizedBox(height: 12),
 
@@ -92,7 +99,11 @@ class _DetalleProductoState extends ConsumerState<DetalleProducto> {
                   separatorBuilder: (_, __) => const SizedBox(width: 8),
                   itemBuilder: (context, i) {
                     final prod = widget.masProductos[i];
-                    final descuento = ((1 - (prod.precio / (prod.precioOriginal ?? prod.precio))) * 100).round();
+                    final descuento = ((1 -
+                                (prod.precio /
+                                    (prod.precioOriginal ?? prod.precio))) *
+                            100)
+                        .round();
 
                     return Container(
                       width: 70,
@@ -111,12 +122,19 @@ class _DetalleProductoState extends ConsumerState<DetalleProducto> {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(12),
-                            child: Image.network(
-                              prod.imagenes.first,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity,
-                            ),
+                            child: prod.imagenes.first.startsWith('assets/')
+                                ? Image.asset(
+                                    prod.imagenes.first,
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                  )
+                                : Image.network(
+                                    prod.imagenes.first,
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                  ),
                           ),
                           if (prod.precioOriginal != null &&
                               prod.precioOriginal! > prod.precio)
@@ -182,34 +200,41 @@ class _DetalleProductoState extends ConsumerState<DetalleProducto> {
                       ),
                       const SizedBox(width: 8),
                       ElevatedButton(
-                        onPressed: cantidad > 0 ? () {
-                          // Añadir al carrito la cantidad seleccionada
-                          for (var i = 0; i < cantidad; i++) {
-                            ref.read(cartProvider.notifier).addProduct(widget.producto);
-                          }
-                          
-                          // Mostrar mensaje de confirmación
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('${widget.producto.nombre} (x$cantidad) agregado al carrito'),
-                              duration: const Duration(seconds: 2),
-                              backgroundColor: const Color(0xFFE53935),
-                              action: SnackBarAction(
-                                label: 'Ver Carrito',
-                                textColor: Colors.white,
-                                onPressed: () {
-                                  Navigator.pop(context); // Cerrar el modal
-                                  context.push('/cart');
-                                },
-                              ),
-                            ),
-                          );
-                          
-                          // Cerrar el modal después de un breve delay
-                          Future.delayed(const Duration(milliseconds: 500), () {
-                            Navigator.pop(context);
-                          });
-                        } : null,
+                        onPressed: cantidad > 0
+                            ? () {
+                                // Añadir al carrito la cantidad seleccionada
+                                for (var i = 0; i < cantidad; i++) {
+                                  ref
+                                      .read(cartProvider.notifier)
+                                      .addProduct(widget.producto);
+                                }
+
+                                // Mostrar mensaje de confirmación
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        '${widget.producto.nombre} (x$cantidad) agregado al carrito'),
+                                    duration: const Duration(seconds: 2),
+                                    backgroundColor: const Color(0xFFE53935),
+                                    action: SnackBarAction(
+                                      label: 'Ver Carrito',
+                                      textColor: Colors.white,
+                                      onPressed: () {
+                                        Navigator.pop(
+                                            context); // Cerrar el modal
+                                        context.push('/cart');
+                                      },
+                                    ),
+                                  ),
+                                );
+
+                                // Cerrar el modal después de un breve delay
+                                Future.delayed(
+                                    const Duration(milliseconds: 500), () {
+                                  Navigator.pop(context);
+                                });
+                              }
+                            : null,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFFF865E),
                           shape: RoundedRectangleBorder(

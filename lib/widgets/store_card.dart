@@ -48,15 +48,22 @@ class StoreCard extends StatelessWidget {
                           child: CircularProgressIndicator(),
                         ),
                         errorWidget: (context, url, error) => const Center(
-                          child: Icon(Icons.store, size: 50, color: Colors.grey),
+                          child:
+                              Icon(Icons.store, size: 50, color: Colors.grey),
                         ),
                       )
-                    : const Center(
-                        child: Icon(Icons.store, size: 50, color: Colors.grey),
-                      ),
+                    : (store.logo.startsWith('assets/')
+                        ? Image.asset(
+                            store.logo,
+                            fit: BoxFit.cover,
+                          )
+                        : const Center(
+                            child:
+                                Icon(Icons.store, size: 50, color: Colors.grey),
+                          )),
               ),
             ),
-            
+
             Padding(
               padding: const EdgeInsets.all(12),
               child: Column(
@@ -95,9 +102,9 @@ class StoreCard extends StatelessWidget {
                         ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 4),
-                  
+
                   // Rating y tiempo de entrega
                   Row(
                     children: [
@@ -144,9 +151,9 @@ class StoreCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 8),
-                  
+
                   // Categorías
                   Wrap(
                     spacing: 4,

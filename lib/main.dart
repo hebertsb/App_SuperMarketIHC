@@ -13,10 +13,10 @@ import 'screens/dev_tools_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Inicializar Firebase (comentado para funcionar sin configuración)
   // await Firebase.initializeApp();
-  
+
   runApp(
     const ProviderScope(
       child: SupermarketDeliveryApp(),
@@ -73,7 +73,9 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: '/products/:storeId',
-      builder: (context, state) => ListaProductosScreen(),
+      builder: (context, state) => ListaProductosScreen(
+        storeId: state.pathParameters['storeId'],
+      ),
     ),
     GoRoute(
       path: '/cart',

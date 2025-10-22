@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supermarket_delivery_app/data/producto.dart';
+import '../../data/mock_data.dart';
 import 'package:supermarket_delivery_app/screens/products/detalle_producto.dart';
 import 'package:supermarket_delivery_app/widgets/product_card.dart';
 import '../../widgets/search_bar.dart';
 
 class ListaProductosScreen extends ConsumerWidget {
-  const ListaProductosScreen({super.key});
+  final String? storeId;
+
+  const ListaProductosScreen({super.key, this.storeId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -57,49 +60,53 @@ class ListaProductosScreen extends ConsumerWidget {
 
           // Grilla de productos
           Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.all(16),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.75,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-              ),
-              itemCount: productos.length,
-              itemBuilder: (context, index) {
-                final producto = productos[index];
-                return ProductoCard(
-                  producto: producto,
-                  onVerDetalle: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(24)),
-                      ),
-                      builder: (context) {
-                        return Padding(
-                          padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom,
-                          ),
-                          child: SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.9,
-                            child: DetalleProducto(
-                              producto: producto,
-                              masProductos: productos
-                                  .where((p) => p.id != producto.id)
-                                  .take(6)
-                                  .toList(),
+            child: Builder(builder: (context) {
+              // Si se recibe storeId, usar productos de esa tienda
+              final lista = MockData.getProducts(storeId);
+              return GridView.builder(
+                padding: const EdgeInsets.all(16),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.75,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                ),
+                itemCount: lista.length,
+                itemBuilder: (context, index) {
+                  final producto = lista[index];
+                  return ProductoCard(
+                    producto: producto,
+                    onVerDetalle: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(24)),
+                        ),
+                        builder: (context) {
+                          return Padding(
+                            padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom,
                             ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                );
-              },
-            ),
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.9,
+                              child: DetalleProducto(
+                                producto: producto,
+                                masProductos: productos
+                                    .where((p) => p.id != producto.id)
+                                    .take(6)
+                                    .toList(),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
+              );
+            }),
           ),
         ],
       ),

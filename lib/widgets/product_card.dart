@@ -38,18 +38,24 @@ class ProductoCard extends ConsumerWidget {
               child: Stack(
                 children: [
                   ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                    borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(12)),
                     child: Container(
                       width: double.infinity,
                       color: Colors.grey[100],
-                      child: producto.imagenes.isNotEmpty &&
-                              producto.imagenes.first.startsWith('http')
-                          ? Image.network(
-                              producto.imagenes.first,
-                              fit: BoxFit.cover,
-                            )
+                      child: producto.imagenes.isNotEmpty
+                          ? (producto.imagenes.first.startsWith('assets/')
+                              ? Image.asset(
+                                  producto.imagenes.first,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.network(
+                                  producto.imagenes.first,
+                                  fit: BoxFit.cover,
+                                ))
                           : const Center(
-                              child: Icon(Icons.image, size: 40, color: Colors.grey),
+                              child: Icon(Icons.image,
+                                  size: 40, color: Colors.grey),
                             ),
                     ),
                   ),
@@ -60,7 +66,8 @@ class ProductoCard extends ConsumerWidget {
                       top: 8,
                       left: 8,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
                           color: Colors.redAccent,
                           borderRadius: BorderRadius.circular(8),
@@ -139,10 +146,13 @@ class ProductoCard extends ConsumerWidget {
                         // Botón agregar
                         GestureDetector(
                           onTap: () {
-                            ref.read(cartProvider.notifier).addProduct(producto);
+                            ref
+                                .read(cartProvider.notifier)
+                                .addProduct(producto);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('${producto.nombre} agregado al carrito'),
+                                content: Text(
+                                    '${producto.nombre} agregado al carrito'),
                                 duration: const Duration(seconds: 1),
                                 backgroundColor: const Color(0xFFE53935),
                               ),

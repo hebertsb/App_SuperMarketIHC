@@ -1,55 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:supermarket_delivery_app/data/mock_data.dart';
 
 class PromotionBanner extends StatelessWidget {
-  const PromotionBanner({super.key});
+  final String? imagePath;
+  const PromotionBanner({super.key, this.imagePath});
 
   @override
   Widget build(BuildContext context) {
+    // Usar la imagen local si existe, si no, usar la primera imagen de productos destacados
+    final productos = MockData.getProducts(null);
+    final String fallbackImage =
+        productos.isNotEmpty ? productos.first.imagenes.first : '';
+    final String img = imagePath ?? 'assets/images/ofertas_semana_25.png';
+    Widget imageWidget;
+    if (img.startsWith('assets/') && img != '') {
+      imageWidget = Image.asset(img, fit: BoxFit.cover);
+    } else if (fallbackImage.startsWith('assets/')) {
+      imageWidget = Image.asset(fallbackImage, fit: BoxFit.cover);
+    } else if (fallbackImage.startsWith('http')) {
+      imageWidget = Image.network(fallbackImage, fit: BoxFit.cover);
+    } else {
+      imageWidget = Container(
+        color: Colors.grey[200],
+        child: const Center(
+            child: Icon(Icons.image, size: 48, color: Colors.grey)),
+      );
+    }
     return Container(
-      height: 100,
+      height: 120,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Colors.orange, Colors.orangeAccent],
-        ),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: const Padding(
-        padding: EdgeInsets.all(16),
-        child: Row(
-          children: [
-            Icon(
-              Icons.local_offer,
-              color: Colors.white,
-              size: 32,
-            ),
-            SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '30% OFF',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    'En productos seleccionados',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+      clipBehavior: Clip.antiAlias,
+      child: imageWidget,
     );
   }
 }

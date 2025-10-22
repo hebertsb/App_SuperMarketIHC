@@ -55,7 +55,14 @@ class MockData {
         deliveryTime: 28,
         deliveryFee: 10.0,
         isOpen: true,
-        categories: ['Frutas', 'Verduras', 'Carnes', 'Lácteos', 'Bebidas', 'Limpieza'],
+        categories: [
+          'Frutas',
+          'Verduras',
+          'Carnes',
+          'Lácteos',
+          'Bebidas',
+          'Limpieza'
+        ],
       ),
       Store(
         id: '5',
@@ -83,7 +90,10 @@ class MockData {
         descripcion: 'Manzanas rojas frescas del valle',
         precio: 12.50,
         precioOriginal: 15.00,
-        imagenes: ['assets/images/apple.jpg'],
+        imagenes: [
+          'https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg', // Manzana
+          'assets/images/apple.jpg'
+        ],
         categoria: 'Frutas',
         unidad: 'kg',
         stock: 50,
@@ -112,7 +122,10 @@ class MockData {
         descripcion: 'Naranjas jugosas para jugo',
         precio: 8.00,
         precioOriginal: 10.00,
-        imagenes: ['assets/images/orange.jpg'],
+        imagenes: [
+          'https://images.pexels.com/photos/42059/orange-fruit-vitamins-healthy-eating-42059.jpeg', // Naranja
+          'assets/images/orange.jpg'
+        ],
         categoria: 'Frutas',
         unidad: 'kg',
         stock: 35,
@@ -170,7 +183,10 @@ class MockData {
         nombre: 'Zanahoria',
         descripcion: 'Zanahorias frescas del valle',
         precio: 5.50,
-        imagenes: ['assets/images/carrot.jpg'],
+        imagenes: [
+          'https://png.pngtree.com/png-clipart/20220116/original/pngtree-carrot-png-image_7072147.png', // Zanahoria
+          'assets/images/carrot.jpg'
+        ],
         categoria: 'Verduras',
         unidad: 'kg',
         stock: 40,
@@ -185,7 +201,10 @@ class MockData {
         nombre: 'Leche Entera',
         descripcion: 'Leche fresca entera 1L',
         precio: 8.50,
-        imagenes: ['assets/images/milk.jpg'],
+        imagenes: [
+          'https://images.pexels.com/photos/416656/pexels-photo-416656.jpeg', // Leche
+          'assets/images/milk.jpg'
+        ],
         categoria: 'Lácteos',
         unidad: 'litro',
         stock: 30,
@@ -229,7 +248,10 @@ class MockData {
         nombre: 'Carne de Res',
         descripcion: 'Carne de res fresca para guisar',
         precio: 45.00,
-        imagenes: ['assets/images/beef.jpg'],
+        imagenes: [
+          'https://images.pexels.com/photos/65175/pexels-photo-65175.jpeg', // Carne de res
+          'assets/images/beef.jpg'
+        ],
         categoria: 'Carnes',
         unidad: 'kg',
         stock: 20,
