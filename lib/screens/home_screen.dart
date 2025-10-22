@@ -147,9 +147,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xFFE53935),
         elevation: 0,
-        title: Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text(
               'Entregar en',
               style: TextStyle(
@@ -1150,18 +1150,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     color: Colors.grey[600],
                   ),
                 ),
-                Row(
+                const Row(
                   children: [
                     Text(
                       'Seguir',
                       style: TextStyle(
                         fontSize: 12,
-                        color: const Color(0xFFE53935),
+                        color: Color(0xFFE53935),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(width: 4),
-                    const Icon(
+                    SizedBox(width: 4),
+                    Icon(
                       Icons.arrow_forward,
                       size: 16,
                       color: Color(0xFFE53935),
@@ -1179,7 +1179,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   // ---------------- Supermarkets carousel (alargado + estrellas + navegación) ----------------
   Widget _buildSupermarketsCarousel(BuildContext context) {
     // Filtra supermercados con logo válido
-    final storesWithLogo = _supermarketStores.where((s) => s['logo'] != null && (s['logo'] as String).isNotEmpty).toList();
+    final storesWithLogo = _supermarketStores
+        .where((s) => s['logo'] != null && (s['logo'] as String).isNotEmpty)
+        .toList();
     return SizedBox(
       height: 130,
       child: ListView.separated(

@@ -142,10 +142,11 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
       // Mover el conductor gradualmente hacia el destino
       final deltaLat = (_destinationLat - _driverLat) * 0.1;
       final deltaLng = (_destinationLng - _driverLng) * 0.1;
-      
+
       // Solo actualizar si todavía no llegó al destino
-      final distance = ((_destinationLat - _driverLat).abs() + (_destinationLng - _driverLng).abs());
-      
+      final distance = ((_destinationLat - _driverLat).abs() +
+          (_destinationLng - _driverLng).abs());
+
       if (distance > 0.0001) {
         setState(() {
           _driverLat += deltaLat;
@@ -153,10 +154,10 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
         });
 
         ref.read(activeOrdersProvider.notifier).updateDriverLocation(
-          widget.orderId,
-          _driverLat,
-          _driverLng,
-        );
+              widget.orderId,
+              _driverLat,
+              _driverLng,
+            );
       }
     }
   }
@@ -251,31 +252,32 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
           ],
         ),
       ),
-      floatingActionButton: order.estado == OrderStatus.entregado && !_showRatingDialog
-          ? FloatingActionButton.extended(
-              onPressed: () {
-                _statusTimer?.cancel();
-                _locationTimer?.cancel();
-                setState(() {
-                  _showRatingDialog = true;
-                });
-                _showRatingDialogModal();
-              },
-              backgroundColor: const Color(0xFFE53935),
-              icon: const Icon(Icons.star),
-              label: const Text('Calificar'),
-            )
-          : null,
+      floatingActionButton:
+          order.estado == OrderStatus.entregado && !_showRatingDialog
+              ? FloatingActionButton.extended(
+                  onPressed: () {
+                    _statusTimer?.cancel();
+                    _locationTimer?.cancel();
+                    setState(() {
+                      _showRatingDialog = true;
+                    });
+                    _showRatingDialogModal();
+                  },
+                  backgroundColor: const Color(0xFFE53935),
+                  icon: const Icon(Icons.star),
+                  label: const Text('Calificar'),
+                )
+              : null,
     );
   }
 
   Widget _buildFlutterMap(Order order) {
     // Coordenadas
-    final storeLat = LatLng(-17.7833, -63.1821); // Tienda
+    const storeLat = LatLng(-17.7833, -63.1821); // Tienda
     final homeLat = LatLng(_destinationLat, _destinationLng); // Tu casa
     final driverLatLng = LatLng(_driverLat, _driverLng); // Conductor
 
-    return Container(
+    return SizedBox(
       height: 350,
       child: Stack(
         children: [
@@ -295,7 +297,8 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
                 userAgentPackageName: 'com.example.supermarket_delivery_app',
               ),
               // Polilínea (ruta)
-              if (order.estado == OrderStatus.enCamino || order.estado == OrderStatus.entregado)
+              if (order.estado == OrderStatus.enCamino ||
+                  order.estado == OrderStatus.entregado)
                 PolylineLayer(
                   polylines: [
                     Polyline(
@@ -337,7 +340,8 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
                         ),
                         Container(
                           margin: const EdgeInsets.only(top: 4),
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(4),
@@ -386,7 +390,8 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
                         ),
                         Container(
                           margin: const EdgeInsets.only(top: 4),
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(4),
@@ -409,13 +414,15 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
                     ),
                   ),
                   // Marcador del conductor (si está en camino)
-                  if (order.estado == OrderStatus.enCamino && order.conductor != null)
+                  if (order.estado == OrderStatus.enCamino &&
+                      order.conductor != null)
                     Marker(
                       point: driverLatLng,
                       width: 100,
                       height: 50,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 6),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20),
@@ -576,7 +583,8 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Llamando a ${driver.nombre}: ${driver.telefono}'),
+                  content:
+                      Text('Llamando a ${driver.nombre}: ${driver.telefono}'),
                 ),
               );
             },
@@ -588,9 +596,24 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
 
   Widget _buildOrderTimeline(Order order) {
     final steps = [
-      ('Confirmado', OrderStatus.confirmado, Icons.check_circle, order.fechaConfirmacion),
-      ('Preparando', OrderStatus.preparando, Icons.restaurant, order.fechaConfirmacion),
-      ('En Camino', OrderStatus.enCamino, Icons.delivery_dining, order.fechaConfirmacion),
+      (
+        'Confirmado',
+        OrderStatus.confirmado,
+        Icons.check_circle,
+        order.fechaConfirmacion
+      ),
+      (
+        'Preparando',
+        OrderStatus.preparando,
+        Icons.restaurant,
+        order.fechaConfirmacion
+      ),
+      (
+        'En Camino',
+        OrderStatus.enCamino,
+        Icons.delivery_dining,
+        order.fechaConfirmacion
+      ),
       ('Entregado', OrderStatus.entregado, Icons.home, order.fechaEntrega),
     ];
 
@@ -722,8 +745,10 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
           const SizedBox(height: 16),
           _buildDetailRow('Tienda', order.nombreTienda),
           _buildDetailRow('Productos', '${order.items.length} items'),
-          _buildDetailRow('Subtotal', 'Bs. ${order.subtotal.toStringAsFixed(2)}'),
-          _buildDetailRow('Envío', 'Bs. ${order.costoEnvio.toStringAsFixed(2)}'),
+          _buildDetailRow(
+              'Subtotal', 'Bs. ${order.subtotal.toStringAsFixed(2)}'),
+          _buildDetailRow(
+              'Envío', 'Bs. ${order.costoEnvio.toStringAsFixed(2)}'),
           const Divider(),
           _buildDetailRow(
             'Total',
@@ -747,7 +772,7 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
               fontSize: 13,
             ),
           ),
-          if (order.infoEntrega.referencia != null && 
+          if (order.infoEntrega.referencia != null &&
               order.infoEntrega.referencia!.isNotEmpty) ...[
             const SizedBox(height: 4),
             Text(
@@ -831,12 +856,12 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
 
   void _showRatingDialogModal() {
     if (!mounted) return;
-    
+
     String? selectedDeliveryTime;
     String? selectedProductQuality;
     String? selectedPackaging;
     String? selectedDriverAttitude;
-    
+
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -879,7 +904,7 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 24),
-                    
+
                     // Calificación general con estrellas
                     const Text(
                       'Calificación General',
@@ -892,8 +917,9 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
                     LayoutBuilder(
                       builder: (context, constraints) {
                         // Calcular tamaño de estrella basado en ancho disponible
-                        final starSize = (constraints.maxWidth * 0.12).clamp(24.0, 40.0);
-                        
+                        final starSize =
+                            (constraints.maxWidth * 0.12).clamp(24.0, 40.0);
+
                         return SizedBox(
                           height: starSize + 10,
                           child: Row(
@@ -906,9 +932,12 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
                                   });
                                 },
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: starSize * 0.1),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: starSize * 0.1),
                                   child: Icon(
-                                    index < _rating ? Icons.star : Icons.star_border,
+                                    index < _rating
+                                        ? Icons.star
+                                        : Icons.star_border,
                                     color: Colors.amber,
                                     size: starSize,
                                   ),
@@ -930,7 +959,7 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
                         textAlign: TextAlign.center,
                       ),
                     const SizedBox(height: 24),
-                    
+
                     // Tiempo de entrega
                     _buildSectionTitle('¿Cómo fue el tiempo de entrega?'),
                     const SizedBox(height: 8),
@@ -941,29 +970,34 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
                         _buildChip(
                           '⚡ Muy rápido',
                           selectedDeliveryTime == 'Muy rápido',
-                          () => setDialogState(() => selectedDeliveryTime = 'Muy rápido'),
+                          () => setDialogState(
+                              () => selectedDeliveryTime = 'Muy rápido'),
                         ),
                         _buildChip(
                           '✓ Puntual',
                           selectedDeliveryTime == 'Puntual',
-                          () => setDialogState(() => selectedDeliveryTime = 'Puntual'),
+                          () => setDialogState(
+                              () => selectedDeliveryTime = 'Puntual'),
                         ),
                         _buildChip(
                           '⏱ Un poco tarde',
                           selectedDeliveryTime == 'Un poco tarde',
-                          () => setDialogState(() => selectedDeliveryTime = 'Un poco tarde'),
+                          () => setDialogState(
+                              () => selectedDeliveryTime = 'Un poco tarde'),
                         ),
                         _buildChip(
                           '⏰ Muy tarde',
                           selectedDeliveryTime == 'Muy tarde',
-                          () => setDialogState(() => selectedDeliveryTime = 'Muy tarde'),
+                          () => setDialogState(
+                              () => selectedDeliveryTime = 'Muy tarde'),
                         ),
                       ],
                     ),
                     const SizedBox(height: 20),
-                    
+
                     // Calidad del producto
-                    _buildSectionTitle('¿En qué estado llegaron los productos?'),
+                    _buildSectionTitle(
+                        '¿En qué estado llegaron los productos?'),
                     const SizedBox(height: 8),
                     Wrap(
                       spacing: 8,
@@ -972,27 +1006,31 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
                         _buildChip(
                           '🌟 Excelente',
                           selectedProductQuality == 'Excelente',
-                          () => setDialogState(() => selectedProductQuality = 'Excelente'),
+                          () => setDialogState(
+                              () => selectedProductQuality = 'Excelente'),
                         ),
                         _buildChip(
                           '👍 Bueno',
                           selectedProductQuality == 'Bueno',
-                          () => setDialogState(() => selectedProductQuality = 'Bueno'),
+                          () => setDialogState(
+                              () => selectedProductQuality = 'Bueno'),
                         ),
                         _buildChip(
                           '👌 Aceptable',
                           selectedProductQuality == 'Aceptable',
-                          () => setDialogState(() => selectedProductQuality = 'Aceptable'),
+                          () => setDialogState(
+                              () => selectedProductQuality = 'Aceptable'),
                         ),
                         _buildChip(
                           '⚠️ Dañado',
                           selectedProductQuality == 'Dañado',
-                          () => setDialogState(() => selectedProductQuality = 'Dañado'),
+                          () => setDialogState(
+                              () => selectedProductQuality = 'Dañado'),
                         ),
                       ],
                     ),
                     const SizedBox(height: 20),
-                    
+
                     // Empaque
                     _buildSectionTitle('¿Cómo estuvo el empaque?'),
                     const SizedBox(height: 8),
@@ -1003,27 +1041,31 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
                         _buildChip(
                           '📦 Perfecto',
                           selectedPackaging == 'Perfecto',
-                          () => setDialogState(() => selectedPackaging = 'Perfecto'),
+                          () => setDialogState(
+                              () => selectedPackaging = 'Perfecto'),
                         ),
                         _buildChip(
                           '✅ Bien sellado',
                           selectedPackaging == 'Bien sellado',
-                          () => setDialogState(() => selectedPackaging = 'Bien sellado'),
+                          () => setDialogState(
+                              () => selectedPackaging = 'Bien sellado'),
                         ),
                         _buildChip(
                           '📋 Normal',
                           selectedPackaging == 'Normal',
-                          () => setDialogState(() => selectedPackaging = 'Normal'),
+                          () => setDialogState(
+                              () => selectedPackaging = 'Normal'),
                         ),
                         _buildChip(
                           '❌ Mal sellado',
                           selectedPackaging == 'Mal sellado',
-                          () => setDialogState(() => selectedPackaging = 'Mal sellado'),
+                          () => setDialogState(
+                              () => selectedPackaging = 'Mal sellado'),
                         ),
                       ],
                     ),
                     const SizedBox(height: 20),
-                    
+
                     // Actitud del repartidor
                     _buildSectionTitle('¿Cómo fue la actitud del repartidor?'),
                     const SizedBox(height: 8),
@@ -1034,27 +1076,31 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
                         _buildChip(
                           '😊 Muy amable',
                           selectedDriverAttitude == 'Muy amable',
-                          () => setDialogState(() => selectedDriverAttitude = 'Muy amable'),
+                          () => setDialogState(
+                              () => selectedDriverAttitude = 'Muy amable'),
                         ),
                         _buildChip(
                           '🙂 Amable',
                           selectedDriverAttitude == 'Amable',
-                          () => setDialogState(() => selectedDriverAttitude = 'Amable'),
+                          () => setDialogState(
+                              () => selectedDriverAttitude = 'Amable'),
                         ),
                         _buildChip(
                           '😐 Normal',
                           selectedDriverAttitude == 'Normal',
-                          () => setDialogState(() => selectedDriverAttitude = 'Normal'),
+                          () => setDialogState(
+                              () => selectedDriverAttitude = 'Normal'),
                         ),
                         _buildChip(
                           '😠 Poco amable',
                           selectedDriverAttitude == 'Poco amable',
-                          () => setDialogState(() => selectedDriverAttitude = 'Poco amable'),
+                          () => setDialogState(
+                              () => selectedDriverAttitude = 'Poco amable'),
                         ),
                       ],
                     ),
                     const SizedBox(height: 32),
-                    
+
                     // Botones
                     Row(
                       children: [
@@ -1063,13 +1109,18 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
                             onPressed: () {
                               Navigator.pop(dialogContext);
                               // Mover a historial sin calificación
-                              ref.read(orderHistoryProvider.notifier).addToHistory(
-                                ref.read(activeOrdersProvider).firstWhere(
-                                  (o) => o.id == widget.orderId,
-                                ),
-                              );
-                              ref.read(activeOrdersProvider.notifier).moveToHistory(widget.orderId);
-                              Navigator.of(context).popUntil((route) => route.isFirst);
+                              ref
+                                  .read(orderHistoryProvider.notifier)
+                                  .addToHistory(
+                                    ref.read(activeOrdersProvider).firstWhere(
+                                          (o) => o.id == widget.orderId,
+                                        ),
+                                  );
+                              ref
+                                  .read(activeOrdersProvider.notifier)
+                                  .moveToHistory(widget.orderId);
+                              Navigator.of(context)
+                                  .popUntil((route) => route.isFirst);
                             },
                             style: OutlinedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 14),
@@ -1095,24 +1146,32 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
                             onPressed: _rating > 0
                                 ? () {
                                     Navigator.pop(dialogContext);
-                                    
+
                                     // Guardar calificación
-                                    ref.read(orderHistoryProvider.notifier).addToHistory(
-                                      ref.read(activeOrdersProvider).firstWhere(
-                                        (o) => o.id == widget.orderId,
-                                      ),
-                                    );
-                                    ref.read(activeOrdersProvider.notifier).moveToHistory(widget.orderId);
-                                    
+                                    ref
+                                        .read(orderHistoryProvider.notifier)
+                                        .addToHistory(
+                                          ref
+                                              .read(activeOrdersProvider)
+                                              .firstWhere(
+                                                (o) => o.id == widget.orderId,
+                                              ),
+                                        );
+                                    ref
+                                        .read(activeOrdersProvider.notifier)
+                                        .moveToHistory(widget.orderId);
+
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: Text('¡Gracias por tu calificación de $_rating estrellas!'),
+                                        content: Text(
+                                            '¡Gracias por tu calificación de $_rating estrellas!'),
                                         backgroundColor: Colors.green,
                                         duration: const Duration(seconds: 3),
                                       ),
                                     );
-                                    
-                                    Navigator.of(context).popUntil((route) => route.isFirst);
+
+                                    Navigator.of(context)
+                                        .popUntil((route) => route.isFirst);
                                   }
                                 : null,
                             style: ElevatedButton.styleFrom(
@@ -1161,7 +1220,9 @@ class _OrderTrackingScreenState extends ConsumerState<OrderTrackingScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFFE53935).withOpacity(0.1) : Colors.grey[100],
+          color: isSelected
+              ? const Color(0xFFE53935).withOpacity(0.1)
+              : Colors.grey[100],
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected ? const Color(0xFFE53935) : Colors.grey[300]!,

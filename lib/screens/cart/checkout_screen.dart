@@ -37,7 +37,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     final items = ref.watch(cartProvider)[widget.storeId] ?? [];
-    final store = MockData.getStores().firstWhere((s) => s.id == widget.storeId);
+    final store =
+        MockData.getStores().firstWhere((s) => s.id == widget.storeId);
     final subtotal =
         ref.read(cartProvider.notifier).getStoreSubtotal(widget.storeId);
     final total = subtotal + store.deliveryFee;
@@ -220,7 +221,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             ],
           ),
           const Divider(),
-            Row(
+          Row(
             children: [
               const Icon(Icons.location_on, color: Color(0xFFE53935)),
               const SizedBox(width: 12),
@@ -464,7 +465,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Tu producto tardará aproximadamente\nentre ${tiempoEstimado} min a ${tiempoEstimado + 15} min',
+              'Tu producto tardará aproximadamente\nentre $tiempoEstimado min a ${tiempoEstimado + 15} min',
               style: TextStyle(
                 fontSize: 12,
                 color: Colors.grey[600],

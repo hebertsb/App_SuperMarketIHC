@@ -9,10 +9,10 @@ class DetalleProducto extends ConsumerStatefulWidget {
   final List<Producto> masProductos;
 
   const DetalleProducto({
-    Key? key,
+    super.key,
     required this.producto,
     required this.masProductos,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<DetalleProducto> createState() => _DetalleProductoState();
@@ -110,11 +110,11 @@ class _DetalleProductoState extends ConsumerState<DetalleProducto> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: Colors.black12,
                             blurRadius: 3,
-                            offset: const Offset(0, 2),
+                            offset: Offset(0, 2),
                           ),
                         ],
                       ),
